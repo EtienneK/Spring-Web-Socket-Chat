@@ -1,0 +1,26 @@
+buildscript {
+	repositories { jcenter() }
+	dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE") }
+}
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'eclipse'
+
+group = "com.etiennek.chat"
+version = "0.0.1"
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-security")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+task wrapper(type: Wrapper) { gradleVersion = '2.2.1' }
