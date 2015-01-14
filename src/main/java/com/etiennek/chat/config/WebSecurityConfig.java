@@ -1,6 +1,10 @@
 package com.etiennek.chat.config;
 
+import java.io.IOException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
@@ -20,15 +25,19 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-        .anyRequest()
-        .fullyAuthenticated()
+    // @formatter:off
+    http
+        .authorizeRequests()
+          .anyRequest()
+            .fullyAuthenticated()
         .and()
-        .formLogin()
-        .authenticationDetailsSource(new CustomWebAuthenticationDetailsSource())
-        .loginPage("/login")
-        .failureUrl("/login?error")
-        .permitAll();
+          .formLogin()
+            .successHandler(new CustomSuccessHandler())
+            //.authenticationDetailsSource(new CustomWebAuthenticationDetailsSource())
+            .loginPage("/login")
+            //.failureUrl("/login?error")
+            .permitAll();
+    // @formatter:on
   }
 
   @Override
@@ -47,27 +56,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     });
   }
 
-  private class CustomWebAuthenticationDetailsSource extends WebAuthenticationDetailsSource {
+  private class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
-    public WebAuthenticationDetails buildDetails(HttpServletRequest context) {
-      return new CustomWebAuthenticationDetails(context);
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+        Authentication authentication) throws IOException, ServletException {
+      String roomName = request.getParameter("roomName");
+      setDefaultTargetUrl("/chat/room/" + roomName);
+      super.onAuthenticationSuccess(request, response, authentication);
     }
-  }
-
-  private class CustomWebAuthenticationDetails extends WebAuthenticationDetails {
-    private static final long serialVersionUID = 4600395938939186132L;
-
-    private String roomName;
-
-    public CustomWebAuthenticationDetails(HttpServletRequest request) {
-      super(request);
-      roomName = request.getParameter("roomName");
-    }
-
-    public String getRoomName() {
-      return roomName;
-    }
-
   }
 
 }
