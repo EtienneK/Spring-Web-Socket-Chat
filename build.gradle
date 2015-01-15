@@ -1,5 +1,9 @@
 buildscript {
-	repositories { jcenter() }
+	repositories {
+        jcenter {
+			url "http://jcenter.bintray.com/"
+		}
+    }
 	dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE") }
 }
 
@@ -13,8 +17,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
-	mavenCentral()
-	jcenter()
+	maven { url "http://repo1.maven.org/maven2" }
 }
 
 dependencies {
