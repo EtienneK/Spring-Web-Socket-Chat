@@ -17,8 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -27,16 +25,12 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     // @formatter:off
     http
-        .authorizeRequests()
-          .anyRequest()
-            .fullyAuthenticated()
-        .and()
-          .formLogin()
-            .successHandler(new CustomSuccessHandler())
-            //.authenticationDetailsSource(new CustomWebAuthenticationDetailsSource())
-            .loginPage("/login")
-            //.failureUrl("/login?error")
-            .permitAll();
+      .authorizeRequests().anyRequest().fullyAuthenticated()
+      .and().formLogin()
+        .successHandler(new CustomSuccessHandler())
+        .loginPage("/login")
+        // .failureUrl("/login?error")
+        .permitAll();
     // @formatter:on
   }
 
@@ -60,6 +54,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
         Authentication authentication) throws IOException, ServletException {
+
       String roomName = request.getParameter("roomName");
       setDefaultTargetUrl("/chat/room/" + roomName);
       super.onAuthenticationSuccess(request, response, authentication);
