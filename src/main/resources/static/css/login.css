@@ -38,7 +38,7 @@ body {
   border-bottom-left-radius: 0;
 }
 
-.form-login #roomNameLabel {
+.form-login #passwordLabel {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/chat")
-public class ChatController {
+class ChatController {
 
   @RequestMapping("/room/{roomName}")
   ModelAndView index(@PathVariable String roomName, Principal principal) {
