@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="layout">
+
+<head>
+<title>Join Chat</title>
+</head>
+
+<body>
+  <div layout:fragment="content" class="container">
+
+    <h1 layout:fragment="header">Join Chat</h1>
+
+    <form id="messageForm" th:action="@{/chat}" th:object="${joinChatRoomModel}" action="#" method="post">
+    
+      <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+        <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Validation error</p>
+      </div>
+
+      <label for="roomName">Room Name</label>
+      <input type="text" th:field="*{roomName}" th:class="${#fields.hasErrors('roomName')} ? 'field-error'" />
+      <div class="form-actions">
+        <input type="submit" value="Join" />
+      </div>
+    </form>
+
+
+  </div>
+</body>
+
+</html>

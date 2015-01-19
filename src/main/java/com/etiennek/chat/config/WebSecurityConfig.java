@@ -7,15 +7,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
-import com.etiennek.chat.auth.CustomUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  private CustomUserDetailsService userDetailsService;
+  private UserDetailsService userDetailsService;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
