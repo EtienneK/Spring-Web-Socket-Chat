@@ -13,29 +13,36 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.etiennek.chat.web.model.JoinChatRoomModel;
+import com.etiennek.chat.web.model.JoinChatChannelModel;
 
 @Controller
 @RequestMapping("/chat")
 class ChatController {
 
   @RequestMapping
-  String join(@ModelAttribute JoinChatRoomModel joinChatRoomModel) {
-    return "chat/join-chat";
+  String viewChannelJoinForm(@ModelAttribute JoinChatChannelModel joinChatChannelModel) {
+    return "chat/join-channel-form";
   }
 
   @RequestMapping(method = RequestMethod.POST)
-  ModelAndView join(@Valid JoinChatRoomModel joinChatRoomModel, BindingResult result, RedirectAttributes redirect) {
+  ModelAndView actionChannelJoinForm(@Valid JoinChatChannelModel joinChatChannelModel, BindingResult result,
+      RedirectAttributes redirect) {
     if (result.hasErrors()) {
-      return new ModelAndView("chat/join-chat", "formErrors", result.getAllErrors());
+      return new ModelAndView("chat/join-channel-form");
     }
-    return new ModelAndView("redirect:/chat/{joinChatRoomModel.roomName}", "joinChatRoomModel.roomName",
-        joinChatRoomModel.getRoomName());
+    return new ModelAndView("redirect:/chat/{joinChatChannelModel.channelName}", "joinChatChannelModel.channelName",
+        joinChatChannelModel.getChannelName());
   }
 
-  @RequestMapping("/{roomName}")
-  ModelAndView room(@PathVariable String roomName, Principal principal) {
-    return new ModelAndView("chat/chat");
+  @RequestMapping("/{channelName}")
+  ModelAndView joinChannel(@PathVariable String channelName, Principal principal) {
+    if ("boom".equals(channelName)) {
+      ModelAndView modelAndView = new ModelAndView("chat/join-channel-form");
+      modelAndView.addObject("errorMessage", "This is an error message");
+      modelAndView.addObject("joinChatChannelModel", new JoinChatChannelModel(channelName));
+      return modelAndView;
+    }
+    return new ModelAndView("chat/chat", "channelName", channelName);
   }
 
 }

@@ -8,16 +8,20 @@
 <body>
   <div layout:fragment="content" class="container">
 
-    <h1 layout:fragment="header">Join Chat</h1>
+    <h1 layout:fragment="header">Join Chat Channel</h1>
 
-    <form id="messageForm" th:action="@{/chat}" th:object="${joinChatRoomModel}" action="#" method="post">
-    
+    <form id="messageForm" th:action="@{/chat}" th:object="${joinChatChannelModel}" action="#" method="post">
+
       <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
         <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Validation error</p>
       </div>
+      
+      <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+      </div>
 
-      <label for="roomName">Room Name</label>
-      <input type="text" th:field="*{roomName}" th:class="${#fields.hasErrors('roomName')} ? 'field-error'" />
+      <label for="channelName">Channel Name</label>
+      <input type="text" th:field="*{channelName}" th:class="${#fields.hasErrors('channelName')} ? 'field-error'" />
       <div class="form-actions">
         <input type="submit" value="Join" />
       </div>
