@@ -1,16 +1,16 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	layout:decorator="layout">
+  layout:decorator="layout">
 
 <head>
 <title>Chat</title>
 </head>
 
 <body>
-	<div layout:fragment="content" class="container">
+  <div layout:fragment="content" class="container">
 
-		Chat in channel <span th:text="${channelName}"></span>!
+    Chat in channel <span th:text="${joinChatChannelModel.channelName}"></span>!
 
-	</div>
+  </div>
 </body>
 
 </html>

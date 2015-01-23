@@ -15,10 +15,6 @@
       <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
         <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Validation error</p>
       </div>
-      
-      <div th:if="${errorMessage}" class="alert alert-danger">
-        <p th:text="${errorMessage}"></p>
-      </div>
 
       <label for="channelName">Channel Name</label>
       <input type="text" th:field="*{channelName}" th:class="${#fields.hasErrors('channelName')} ? 'field-error'" />

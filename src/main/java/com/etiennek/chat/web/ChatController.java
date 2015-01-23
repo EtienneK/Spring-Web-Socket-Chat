@@ -4,8 +4,10 @@ import java.security.Principal;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,9 @@ import com.etiennek.chat.web.model.JoinChatChannelModel;
 @Controller
 @RequestMapping("/chat")
 class ChatController {
+
+  @Autowired
+  private Validator validator;
 
   @RequestMapping
   String viewChannelJoinForm(@ModelAttribute JoinChatChannelModel joinChatChannelModel) {
@@ -35,14 +40,14 @@ class ChatController {
   }
 
   @RequestMapping("/{channelName}")
-  ModelAndView joinChannel(@PathVariable String channelName, Principal principal) {
-    if ("boom".equals(channelName)) {
-      ModelAndView modelAndView = new ModelAndView("chat/join-channel-form");
-      modelAndView.addObject("errorMessage", "This is an error message");
-      modelAndView.addObject("joinChatChannelModel", new JoinChatChannelModel(channelName));
-      return modelAndView;
+  ModelAndView joinChannel(@PathVariable String channelName, @ModelAttribute JoinChatChannelModel joinChatChannelModel,
+      BindingResult result, Principal principal) {
+    joinChatChannelModel.setChannelName(channelName);
+    validator.validate(joinChatChannelModel, result);
+    if (result.hasErrors()) {
+      return new ModelAndView("chat/join-channel-form");
     }
-    return new ModelAndView("chat/chat", "channelName", channelName);
+    return new ModelAndView("chat/chat");
   }
 
 }
