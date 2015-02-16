@@ -1,16 +1,39 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-  layout:decorator="layout">
+	layout:decorator="layout">
 
 <head>
+<script>
+	var CHANNEL_NAME = '<th:block th:text="${joinChatChannelModel.channelName}" />';
+</script>
+<script src="//cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+<script type='text/javascript' th:src="@{/js/chat.js}"></script>
+
 <title>Chat</title>
+
 </head>
 
 <body>
-  <div layout:fragment="content" class="container">
+	<div layout:fragment="content" class="container">
 
-    Chat in channel <span th:text="${joinChatChannelModel.channelName}"></span>!
+		<h1 data-bind="visible: !joined()">
+			Joining channel '<span th:text="${joinChatChannelModel.channelName}"></span>'...
+		</h1>
 
-  </div>
+		<h1 data-bind="visible: joined()" th:text="${joinChatChannelModel.channelName}"></h1>
+		<div class="row" data-bind="visible: joined()">
+			<div class="col-md-8">
+				<div style="height: 300px;" class="well"></div>
+				<input style="width: 100%;" type="text" />
+			</div>
+			<div class="col-md-4">
+				<ul data-bind="foreach: users">
+					<li data-bind="text: $data"></li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
 </body>
 
 </html>

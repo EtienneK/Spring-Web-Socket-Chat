@@ -1,6 +1,6 @@
 buildscript {
-    repositories { jcenter { url "http://jcenter.bintray.com/" } }
-    dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE") }
+  repositories { jcenter { url "http://jcenter.bintray.com/" } }
+  dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE") }
 }
 
 apply plugin: 'java'
@@ -12,14 +12,24 @@ version = "0.0.1"
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-repositories { maven { url "http://repo1.maven.org/maven2"
-    } }
+repositories {
+  maven { url "http://repo1.maven.org/maven2" }
+  maven { url "http://clojars.org/repo" }
+}
+
+ext { springSessionVersion = '1.0.0.RELEASE' }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    compile("org.springframework.boot:spring-boot-starter-security")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+  compile("org.springframework.boot:spring-boot-starter-web")
+  compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+  compile("org.springframework.boot:spring-boot-starter-security")
+  compile("org.springframework.boot:spring-boot-starter-redis")
+  compile("org.springframework.boot:spring-boot-starter-websocket")
+  compile("org.springframework.session:spring-session:$springSessionVersion")
+
+  compile("org.hsqldb:hsqldb")
+
+  testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 task wrapper(type: Wrapper) { gradleVersion = '2.2.1' }
